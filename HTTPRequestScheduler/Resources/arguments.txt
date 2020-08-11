@@ -1,0 +1,45 @@
+Avaliable Parameters:
+
+  Headers         => Line per each header in this format: 'header1=value1\r\nheader2=value2'
+  RequestType     => GET / POST / PUT / HEAD / DELETE / PATCH / OPTIONS
+  RequestUrl      => Request URL
+  Content         => Content to send with the request (For POST and PUT requests)
+  ContentType     => e.g. application/json or text/plain
+  ExcelFile       => Location of the Workbook (.\FileName.xlsx for file on the same path of the exe)
+  SheetName       => Sheet on the excel file that contains the values to insert
+  FirstRow        => First row to start from (each row is a new request)
+  RecursiveInsert => Continue to insert values from the sheet until no pointers exist (True / False)
+  Trigger         => Start sending requests when it's time (True / False)
+  Days            => Trigger days (e.g. "All" or "Sunday,Monday,Saturday,..")
+  Time            => Trigger time of day (e.g. 04:00 or 21:00 or 10:00 PM)
+
+  Using: 
+    With "-" at the beginning of the argument and value immediately after.
+
+Note: 
+  Any parameter will be written on the INI file, that means they will be reserved for the next execution.
+  Parameters that will be not specified will be taken from the INI file.
+
+
+Avaliable Options:
+  Help       => Print this help.
+  S or Send  => Starts the sending process.
+  H or Hide  => Hides the GUI window and keeps running.
+  C or Close => Closes the program at the end of the process.
+
+  Using: 
+    With "/" at the beginning of the argument and (no value after).
+
+
+Examples:
+
+1. "File Name.exe" -Request URL -SendContent True -Content "Body Text" -ContentType text/plain -ExcelFile .\Workbook.xlsx /S /C
+  Result: 
+    Requests will be sent to "URL" with content "Body Text" of type "text/plain" 
+    and request's values pointers will be taken from "Workbook.xlsx" that located on the same path of "File Name.exe", 
+    after this process the program will be closed.
+
+2. "File Name.exe" -Trigger True -Days All -Time 02:30 /H
+  Result:
+    Program will be hidden and will wait for 02:30 AM to start sending the requests,
+	After that it will wait again for the next 02:30 AM again and again until killing.
