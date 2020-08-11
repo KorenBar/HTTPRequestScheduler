@@ -45,6 +45,27 @@ namespace Utility
             return recursive ? InsertValues(text, worksheet, separators, defaultRow, recursive) : text;
         }
 
+        /// <summary>
+        /// Get array of pointers from string
+        /// </summary>
+        /// <param name="str">Input string</param>
+        /// <param name="separator">char at the beginning and end of each pointer</param>
+        /// <returns></returns>
+        public static string[] GetPointers(this string str, char separators)
+        {
+            List<string> arr = new List<string>(str.Split('#')); // Split with separator #.
+            for (int i = 1; i < arr.Count; i += 2) // Every second string.
+                // Merge string to one before until is pointer.
+                while (i < arr.Count && !(!arr[i].Contains(" ") && arr[i].All(c => char.IsLetter(c) || char.IsDigit(c)) && arr[i].Any(char.IsLetter) && arr[i].EndsWith(string.Concat(arr[i].Where(char.IsDigit)))))
+                // Pointer must be without any space, contains only letters and digits, contains at least one letter, ends with his row number (no mixed chars and digits).
+                {
+                    arr[i - 1] += "#" + arr[i];
+                    arr.RemoveAt(i);
+                }
+            // Any second string will be a pointer.
+            return arr.Skip(1).Where((s, idx) => idx % 2 == 0).ToArray();
+        }
+
         public static string[] GetSheets(string excelFilePath)
         {
             List<string> sheets = new List<string>();
