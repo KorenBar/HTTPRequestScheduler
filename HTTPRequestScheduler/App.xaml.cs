@@ -25,6 +25,12 @@ namespace HTTPRequestScheduler
         public App()
         {
             ProcessHelper.HideMainWindow();
+
+            // Recreate the default ini with the name of the exe file
+            string fileName = Assembly.GetExecutingAssembly().Location;
+            string iniFileName = Path.Combine(Path.GetDirectoryName(fileName), Path.GetFileNameWithoutExtension(fileName) + ".ini");
+            Ini.Default = new Ini(iniFileName);
+
             Ini.Default.CreateDefault(HTTPRequestScheduler.Properties.Resources.DefaultIni);
             Ini.Default.IniFile.WriteValues("" ,ProcessHelper.ArgsValues);
         }
